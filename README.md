@@ -99,11 +99,13 @@ Thus, it will return a boolean value. So, you can know if your data is updated o
 
 ### Delete data:
 To delete a row data, call ```deleteRow(rowId)``` like this:
+
 ```boolean deleted = easyDB.deleteRow(rowId);```
 Thus, it will return a boolean value. So, you can know if your data is updated or not...
 
 ### Delete a table fully:
 To delete a table and its all data, call ```deleteAllDataFromTable``` like this:
+
 ```easyDB.deleteAllDataFromTable();```
 
 Hope you'll enjoy using this library :)
