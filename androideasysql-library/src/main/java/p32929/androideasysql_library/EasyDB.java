@@ -100,6 +100,12 @@ public class EasyDB extends SQLiteOpenHelper {
         return this;
     }
 
+    public EasyDB updateData(int columnNumber, int data) {
+        if (!initedDb || writableDatabase == null) initDatabase();
+        contentValues.put(columns.get(columnNumber - 1).columnName, data);
+        return this;
+    }
+
     public boolean rowID(int id) {
         return writableDatabase.update(TABLE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)}) > 0;
     }

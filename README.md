@@ -42,24 +42,39 @@ EasyDB easyDB = EasyDB.init(this, "TEST", null, 1)
                 .addColumn(new Column("C3", DataType.TEXT))
                 .doneTableColumn();
 ```
+> addColumn(column)
+
+> Column(columnName, dataType)
 
 saving the object into a variable will make easier to work with the database later.
 
-** You don't have to add any primary key. The library does it by default**
+** You don't have to add any primary key. The library does it by default **
 
 ### Adding data:
 You can call the ```addData()``` in two ways:
-* addData(columnNumber, data)
-* addData(columnName, data)
+
+> addData(columnNumber, data)
+
+> addData(columnName, data)
 
 ```data``` can be either ```integer``` or ```string```
-after adding all data, call ```doneDataAdding()``` method...
+after adding all data, call ```doneDataAdding()``` method.
+```columnName``` is String and ```columnNumber``` is integer
 
 Example:
 ```
 boolean done = easyDB.addData(1, "Data1")
                 .addData(2, "Data2")
                 .addData(3, "Data3")
+                .doneDataAdding();
+```
+
+or
+
+```
+boolean done = easyDB.addData("C1", "Data1")
+                .addData("C2", "Data2")
+                .addData("C3", "Data3")
                 .doneDataAdding();
 ```
 
@@ -86,6 +101,14 @@ String aStringVariable = res.getString(columnIndex);
 
 here ```columnIndex``` is an integer, starts from 0
 
+Example
+```
+while (res.moveToNext()) {
+	int anIntegerVariable = res.getString(columnIndex);
+    String aStringVariable = res.getString(columnIndex);
+}
+```
+
 ### Update / Edit data:
 To update / Edit, call ```updateData(columnNumber, data)``` method.
 Example:
@@ -95,6 +118,8 @@ boolean updated = easyDB.updateData(1, "UpdatedData1")
                 .updateData(3, "UpdatedData3")
                 .rowID(id);
 ```
+
+UpdatedData can be either integer or String.
 Thus, it will return a boolean value. So, you can know if your data is updated or not...
 
 ### Delete data:
@@ -108,7 +133,9 @@ To delete a table and its all data, call ```deleteAllDataFromTable``` like this:
 
 ```easyDB.deleteAllDataFromTable();```
 
-Hope you'll enjoy using this library :)
+Hope you'll enjoy using the library :)
+
+> Thanks
 
 ## Lisense:
 ```
