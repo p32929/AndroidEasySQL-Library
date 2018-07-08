@@ -2,7 +2,6 @@ package p32929.databaseeasier;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.renderscript.Element;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         boolean updated = easyDB.updateData(1, "AA" + ++updateInt)
                 .updateData(2, "BB" + ++updateInt)
                 .updateData(3, "CC" + ++updateInt)
-                .rowToUpdate(++row);
+                .rowID(++row);
 
         Toast.makeText(this, "Updated: " + updated, Toast.LENGTH_SHORT).show();
     }
