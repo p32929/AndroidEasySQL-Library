@@ -21,7 +21,7 @@ dependencies {
 ## Usage
 Steps to follow:
 * Initialize
-* Set Table Name
+* Set Table Name (Not mandatory)
 * Add columns
 * Call done method
 
@@ -84,9 +84,11 @@ Thus, it will return a boolean value.
 
 ### Showing data:
 To get all data as a ```Cursor``` object, call ```getAllData()``` like this:
+
 ```Cursor res = easyDB.getAllData();```
 
 Later use a while loop like this:
+
 ```
 while (res.moveToNext()) {
 	// Your code here
@@ -126,6 +128,7 @@ Thus, it will return a boolean value. So, you can know if your data is updated o
 To delete a row data, call ```deleteRow(rowId)``` like this:
 
 ```boolean deleted = easyDB.deleteRow(rowId);```
+
 Thus, it will return a boolean value. So, you can know if your data is updated or not...
 
 ### Delete a table fully:
