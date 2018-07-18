@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidEasySQL-Github.iml" filepath="$PROJECT_DIR$/AndroidEasySQL-Github.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidEasySQL-Library.iml" filepath="$PROJECT_DIR$/AndroidEasySQL-Library.iml" />
       <module fileurl="file://$PROJECT_DIR$/androideasysql-library/androideasysql-library.iml" filepath="$PROJECT_DIR$/androideasysql-library/androideasysql-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

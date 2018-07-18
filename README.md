@@ -36,7 +36,7 @@ After that you can do:
 ### Initialization, Set Table Name, Add columns, altogether:
 ```
 EasyDB easyDB = EasyDB.init(this, "TEST", null, 1)
-                .setTableName("DEMO TABLE")
+                .setTableName("DEMO TABLE")  // You can ignore this line if you want :D
                 .addColumn(new Column("C1", DataType.TEXT))
                 .addColumn(new Column("C2", DataType.TEXT))
                 .addColumn(new Column("C3", DataType.TEXT))

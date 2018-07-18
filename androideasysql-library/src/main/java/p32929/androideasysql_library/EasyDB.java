@@ -41,7 +41,7 @@ public class EasyDB extends SQLiteOpenHelper {
 
 
     // Variables
-    private String DATABASE_NAME, TABLE_NAME, SQL = "";
+    private String DATABASE_NAME, TABLE_NAME = "DEMO_TABLE", SQL = "";
     private ArrayList<Column> columns = new ArrayList<>();
     private SQLiteDatabase writableDatabase;
     ContentValues contentValues = new ContentValues();

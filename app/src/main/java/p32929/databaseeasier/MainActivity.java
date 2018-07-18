@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.dataText);
 
         easyDB = EasyDB.init(this, "TEST", null, 1)
-                .setTableName("DEMO TABLE")
                 .addColumn(new Column("C1", DataType.TEXT))
                 .addColumn(new Column("C2", DataType.TEXT))
                 .addColumn(new Column("C3", DataType.TEXT))
