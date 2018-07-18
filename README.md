@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-  implementation 'com.github.p32929:AndroidEasySQL-Library:1.1'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.2'
 }
 ```
 
