@@ -140,7 +140,7 @@ Hope you'll enjoy using the library :)
 
 > Thanks
 
-## Lisense:
+## License:
 ```
 MIT License
 
