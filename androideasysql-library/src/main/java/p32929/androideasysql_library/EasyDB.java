@@ -75,7 +75,6 @@ public class EasyDB extends SQLiteOpenHelper {
     }
 
 
-
     public boolean doneDataAdding() {
         long result = writableDatabase.insert(TABLE_NAME, null, contentValues);
         contentValues = new ContentValues();
@@ -157,12 +156,14 @@ public class EasyDB extends SQLiteOpenHelper {
     public static EasyDB init(Context context, String dbName, SQLiteDatabase.CursorFactory factory, int version) {
         if (!dbName.endsWith(".db"))
             dbName += ".db";
+        dbName = dbName.replaceAll(" ", "_");
         return new EasyDB(context, dbName, factory, version);
     }
 
     public static EasyDB init(Context context, String dbName, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         if (!dbName.endsWith(".db"))
             dbName += ".db";
+        dbName = dbName.replaceAll(" ", "_");
         return new EasyDB(context, dbName, factory, version, errorHandler);
     }
 

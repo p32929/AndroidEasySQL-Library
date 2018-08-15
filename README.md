@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.2'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3'
 }
 ```
 
@@ -35,20 +35,23 @@ After that you can do:
 ## Code example
 ### Initialization, Set Table Name, Add columns, altogether:
 ```
-EasyDB easyDB = EasyDB.init(this, "TEST", null, 1)
-                .setTableName("DEMO TABLE")  // You can ignore this line if you want :D
-                .addColumn(new Column("C1", DataType.TEXT))
-                .addColumn(new Column("C2", DataType.TEXT))
-                .addColumn(new Column("C3", DataType.TEXT))
+EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
+                .setTableName("DEMO TABLE")  // You can ignore this line if you want
+                .addColumn(new Column("C1", new DataType()._text_().unique().done()))
+                .addColumn(new Column("C2", new DataType()._text_().notNull().done()))
+                .addColumn(new Column("C3", new DataType()._text_().done()))
                 .doneTableColumn();
 ```
+
+You can add as many constraint methods like  ```unique()``` , ```notNull()``` etc. Just, don't forget to call the ```done()``` method at the end. See the example above...
+
 > addColumn(column)
 
 > Column(columnName, dataType)
 
-saving the object into a variable will make easier to work with the database later.
+** Saving the object into a variable will make easier to work with the database later. **
 
-** You don't have to add any primary key. The library does it by default **
+** You don't have to add any primary key. The library does it by default (as ```ID``` column) **
 
 ### Adding data:
 You can call the ```addData()``` in two ways:
@@ -57,9 +60,9 @@ You can call the ```addData()``` in two ways:
 
 > addData(columnName, data)
 
-```data``` can be either ```integer``` or ```string```
-after adding all data, call ```doneDataAdding()``` method.
-```columnName``` is String and ```columnNumber``` is integer
+```data``` parameter in ```addData()``` can be either integer or string. After adding all data, call ```doneDataAdding()``` method.
+
+ ```columnName``` is String and ```columnNumber``` is integer
 
 Example:
 ```
@@ -103,10 +106,10 @@ String aStringVariable = res.getString(columnIndex);
 
 here ```columnIndex``` is an integer, starts from 0
 
-Example
+Example:
 ```
 while (res.moveToNext()) {
-	int anIntegerVariable = res.getString(columnIndex);
+    int anIntegerVariable = res.getString(columnIndex);
     String aStringVariable = res.getString(columnIndex);
 }
 ```
@@ -140,7 +143,7 @@ Hope you'll enjoy using the library :)
 
 > Thanks
 
-## Lisense:
+## License:
 ```
 MIT License
 
