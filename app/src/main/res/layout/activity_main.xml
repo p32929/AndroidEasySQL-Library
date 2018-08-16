@@ -3,52 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     android:orientation="vertical"
     tools:context="p32929.databaseeasier.MainActivity">
 
-    <TextView
-        android:id="@+id/dataText"
+    <EditText
+        android:id="@+id/c1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="C1" />
+
+    <EditText
+        android:id="@+id/c2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="DATA"
-        android:textAlignment="center" />
+        android:hint="C2" />
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:onClick="showData"
-        android:text="showData" />
+        android:orientation="horizontal"
+        android:weightSum="4">
 
-    <Button
+        <Button
+            android:id="@+id/saver_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/show_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/edit_button"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/delete_button"
+            android:text="Delete"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="addData"
-        android:text="addData" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="editData"
-        android:text="editData" />
+        <TextView
+            android:id="@+id/res"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="deleteData"
-        android:text="deleteData" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="deleteAll"
-        android:text="deleteAll" />
-
-
+    </ScrollView>
 
 </LinearLayout>

@@ -1,9 +1,13 @@
 package p32929.databaseeasier;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,80 +17,123 @@ import p32929.androideasysql_library.EasyDB;
 
 public class MainActivity extends AppCompatActivity {
 
-    //
+    EditText editTextC1, editTextC2;
+    Button buttonSaver, buttonShow, buttonEdit, buttonDelete;
+    TextView textViewResult;
+
     EasyDB easyDB;
-    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView) findViewById(R.id.dataText);
+        editTextC1 = findViewById(R.id.c1);
+        editTextC2 = findViewById(R.id.c2);
+        buttonSaver = findViewById(R.id.saver_button);
+        buttonShow = findViewById(R.id.show_button);
+        buttonEdit = findViewById(R.id.edit_button);
+        buttonDelete = findViewById(R.id.delete_button);
+        textViewResult = findViewById(R.id.res);
 
-        easyDB = EasyDB.init(this, "TEST", null, 1)
+        easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
+                .setTableName("DEMO TABLE")  // You can ignore this line if you want
                 .addColumn(new Column("C1", new DataType()._text_().unique().done()))
-                .addColumn(new Column("C2", new DataType()._text_().notNull().done()))
-                .addColumn(new Column("C3", new DataType()._text_().done()))
+                .addColumn(new Column("C2", new DataType()._text_().unique().done()))
                 .doneTableColumn();
+
+        buttonShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showData();
+            }
+        });
+
+        buttonSaver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String c1 = editTextC1.getText().toString();
+                String c2 = editTextC2.getText().toString();
+
+                if (c1 != null && c2 != null) {
+                    if (!c1.isEmpty() && !c2.isEmpty()) {
+                        boolean done = easyDB.addData(1, c1)
+                                .addData(2, c2)
+                                .doneDataAdding();
+
+                        Toast.makeText(MainActivity.this, "Done: " + done, Toast.LENGTH_SHORT).show();
+                        showData();
+                    }
+                }
+            }
+        });
+
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText taskEditText = new EditText(MainActivity.this);
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Edit Data")
+                        .setMessage("Enter row number")
+                        .setView(taskEditText)
+                        .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String c1 = editTextC1.getText().toString();
+                                String c2 = editTextC2.getText().toString();
+
+                                if (c1 != null && c2 != null) {
+                                    if (!c1.isEmpty() && !c2.isEmpty()) {
+                                        boolean done = easyDB.updateData(1, c1)
+                                                .updateData(2, c2)
+                                                .rowID(Integer.valueOf(taskEditText.getText().toString()));
+
+                                        Toast.makeText(MainActivity.this, "Updated: " + done, Toast.LENGTH_SHORT).show();
+                                        showData();
+                                    }
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create();
+                dialog.show();
+            }
+        });
+
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText taskEditText = new EditText(MainActivity.this);
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Delete Data")
+                        .setMessage("Enter row number")
+                        .setView(taskEditText)
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                boolean deleted = easyDB.deleteRow(Integer.valueOf(taskEditText.getText().toString()));
+                                Toast.makeText(MainActivity.this, "Deleted: " + deleted, Toast.LENGTH_SHORT).show();
+                                showData();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create();
+                dialog.show();
+            }
+        });
     }
 
-    // Show
-    public void showData(View view) {
+
+    private void showData() {
+        String tres = "";
         Cursor res = easyDB.getAllData();
-        String totalData = "";
-
         while (res.moveToNext()) {
-            String id = res.getString(0);
-            String sa = res.getString(1);
-            String sb = res.getString(2);
-            String sc = res.getString(3);
+            String row = res.getString(0);
+            String c1 = res.getString(1);
+            String c2 = res.getString(2);
+            tres += "Row: " + row + " C1 = " + c1 + " C2 = " + c2 + "\n";
 
-            totalData += "ID " + id + " , SA = " + sa + " , SB = " + sb + " , SC = " + sc + "\n";
+            textViewResult.setText(tres);
         }
-
-        if (totalData.isEmpty()) textView.setText("EMPTY DB");
-        else textView.setText(totalData);
-    }
-
-
-    // Add
-    int dataInt = 0;
-
-    public void addData(View view) {
-        boolean done = easyDB.addData(1, "A" + ++dataInt)
-                .addData(2, "B" + ++dataInt)
-                .addData(3, "C" + ++dataInt)
-                .doneDataAdding();
-
-        Toast.makeText(this, "Data Added: " + done, Toast.LENGTH_SHORT).show();
-    }
-
-
-    // update
-    int updateInt = 0;
-    int row = 0;
-
-    public void editData(View view) {
-        boolean updated = easyDB.updateData(1, "AA" + ++updateInt)
-                .updateData(2, "BB" + ++updateInt)
-                .updateData(3, "CC" + ++updateInt)
-                .rowID(++row);
-
-        Toast.makeText(this, "Updated: " + updated, Toast.LENGTH_SHORT).show();
-    }
-
-
-    // Delete
-    int deleteInt = 0;
-
-    public void deleteData(View view) {
-        boolean deleted = easyDB.deleteRow(++deleteInt);
-        Toast.makeText(this, "Deleted: " + deleted, Toast.LENGTH_SHORT).show();
-    }
-
-    public void deleteAll(View view) {
-        easyDB.deleteAllDataFromTable();
-        Toast.makeText(this, "All data from table deleted", Toast.LENGTH_SHORT).show();
     }
 }

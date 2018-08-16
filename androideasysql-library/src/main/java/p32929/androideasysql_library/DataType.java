@@ -29,7 +29,7 @@ SOFTWARE.
  */
 
 public class DataType {
-    private static String type = "";
+    private String type = "";
 
     // Data Types
     private String TEXT = " TEXT ";

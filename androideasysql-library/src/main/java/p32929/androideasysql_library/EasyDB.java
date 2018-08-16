@@ -106,7 +106,11 @@ public class EasyDB extends SQLiteOpenHelper {
     }
 
     public boolean rowID(int id) {
-        return writableDatabase.update(TABLE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)}) > 0;
+        try {
+            return writableDatabase.update(TABLE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)}) > 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     //
