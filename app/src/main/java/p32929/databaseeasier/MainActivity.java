@@ -128,10 +128,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String c1 = editTextC1.getText().toString();
                 String c2 = editTextC2.getText().toString();
-
                 String cols[] = easyDB.getAllColumns();
 
-                boolean matched = easyDB.matchColumns(new String[]{cols[1], cols[2]}, new String[]{c1, c2});
+                String columnsToMatch[] = new String[]{cols[1], cols[2]};
+                String valuesToMatch[] = new String[]{c1, c2};
+
+                boolean matched = easyDB.matchColumns(columnsToMatch, valuesToMatch);
                 Toast.makeText(MainActivity.this, "Matched = " + matched, Toast.LENGTH_SHORT).show();
             }
         });
