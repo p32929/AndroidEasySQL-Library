@@ -128,9 +128,11 @@ To get all column data from a row, call ```getOneRowData(rowID)```. It will retu
 Example:
 ```
 Cursor res = easyDB.getOneRowData(1);
-res.moveToFirst(); // Because here's only one row data
-String c1 = res.getString(1);
-String c2 = res.getString(2);
+if (res != null) {
+    res.moveToFirst(); // Because here's only one row data
+    String c1 = res.getString(1);
+    String c2 = res.getString(2);
+}
 ```
 
 ### Match data from multiple columns:
