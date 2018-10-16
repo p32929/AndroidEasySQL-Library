@@ -18,7 +18,7 @@ import p32929.androideasysql_library.EasyDB;
 public class MainActivity extends AppCompatActivity {
 
     EditText editTextC1, editTextC2;
-    Button buttonSaver, buttonShow, buttonEdit, buttonDelete;
+    Button buttonSaver, buttonShow, buttonEdit, buttonDelete, buttonMatch;
     TextView textViewResult;
 
     EasyDB easyDB;
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         buttonShow = findViewById(R.id.show_button);
         buttonEdit = findViewById(R.id.edit_button);
         buttonDelete = findViewById(R.id.delete_button);
+        buttonMatch = findViewById(R.id.match_button);
         textViewResult = findViewById(R.id.res);
 
         easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
@@ -121,6 +122,19 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        buttonMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String c1 = editTextC1.getText().toString();
+                String c2 = editTextC2.getText().toString();
+
+                String cols[] = easyDB.getAllColumns();
+
+                boolean matched = easyDB.matchColumns(new String[]{cols[1], cols[2]}, new String[]{c1, c2});
+                Toast.makeText(MainActivity.this, "Matched = " + matched, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -134,6 +148,23 @@ public class MainActivity extends AppCompatActivity {
             tres += "Row: " + row + " C1 = " + c1 + " C2 = " + c2 + "\n";
 
             textViewResult.setText(tres);
+        }
+    }
+
+    public void getData1(View view) {
+        String tres = "";
+        Cursor res = easyDB.getOneRowData(1);
+        if (res != null) {
+            res.moveToFirst();
+
+            String row = res.getString(0);
+            String c1 = res.getString(1);
+            String c2 = res.getString(2);
+            tres += "Row: " + row + " C1 = " + c1 + " C2 = " + c2 + "\n";
+
+            textViewResult.setText(tres);
+        } else {
+            Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
         }
     }
 }

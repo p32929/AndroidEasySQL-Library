@@ -92,6 +92,43 @@ public class EasyDB extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getOneRowData(int id) {
+        if (!initedDb || writableDatabase == null) initDatabase();
+        String allColNames[] = new String[columns.size() + 1];
+        allColNames[0] = "ID";
+        for (int i = 0; i < columns.size(); i++) {
+            allColNames[i + 1] = columns.get(i).columnName;
+        }
+        Cursor cursor = writableDatabase.query(TABLE_NAME,
+                allColNames,
+                allColNames[0].toString() + "=?",
+                new String[]{String.valueOf(id)},
+                null, null, null, "1");
+
+        if (cursor.getCount() > 0) {
+            return cursor;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean matchColumns(String columnsToMatch[], String valuesToMatch[]) {
+        String query = "";
+        // columnsToMatch.get(0).columnName + " = ?" + " AND " + columnsToMatch.get(2).columnName + " = ?";
+        for (int i = 0; i < columnsToMatch.length; i++) {
+            query += columnsToMatch[i] + " = ? ";
+            if (i != columnsToMatch.length - 1) {
+                query += " AND ";
+            }
+        }
+        Cursor cursor = writableDatabase.query(TABLE_NAME, columnsToMatch, query, valuesToMatch, null, null, null);
+        if (cursor.getCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //
     public EasyDB updateData(int columnNumber, String data) {
         if (!initedDb || writableDatabase == null) initDatabase();
@@ -148,6 +185,16 @@ public class EasyDB extends SQLiteOpenHelper {
 
         if (!initedDb || writableDatabase == null) initDatabase();
         return this;
+    }
+
+    //
+    public String[] getAllColumns() {
+        String allColNames[] = new String[columns.size() + 1];
+        allColNames[0] = "ID";
+        for (int i = 0; i < columns.size(); i++) {
+            allColNames[i + 1] = columns.get(i).columnName;
+        }
+        return allColNames;
     }
 
     //
