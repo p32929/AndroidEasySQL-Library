@@ -95,7 +95,7 @@ public class EasyDB extends SQLiteOpenHelper {
     public Cursor getAllDataOrderedBy(int columnNumber, boolean ascending) {
         String postfix = ascending ? "" : " DESC ";
         if (!initedDb || writableDatabase == null) initDatabase();
-        Cursor res = writableDatabase.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + columns.get(columnNumber).columnName + postfix, null);
+        Cursor res = writableDatabase.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + columns.get(columnNumber - 1).columnName + postfix, null);
         return res;
     }
 
@@ -122,7 +122,6 @@ public class EasyDB extends SQLiteOpenHelper {
 
     public boolean matchColumns(String columnsToMatch[], String valuesToMatch[]) {
         String query = "";
-        // columnsToMatch.get(0).columnName + " = ?" + " AND " + columnsToMatch.get(2).columnName + " = ?";
         for (int i = 0; i < columnsToMatch.length; i++) {
             query += columnsToMatch[i] + " = ? ";
             if (i != columnsToMatch.length - 1) {
