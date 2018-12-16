@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.3'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.4'
 }
 ```
 
@@ -94,9 +94,15 @@ Thus, it will return a boolean value.
 ```False``` means data isn't added successfully.
 
 ### Get/Read All Data:
-To get all data as a ```Cursor``` object, call ```getAllData()``` like this:
+To get all data as a ```Cursor``` object, call ```getAllData()``` or ```getAllDataOrderedBy()``` like this:
 
 ```Cursor res = easyDB.getAllData();```
+
+or
+
+```Cursor res = easyDB.getAllDataOrderedBy(columnNumber, ascendingOrDescending);```
+
+```ascendingOrDescending``` parameter in ```getAllDataOrderedBy()``` is a boolean value. To get all data in ascending order pass ```true```, or to get all in descending order pass ```false``` as the parameter.
 
 Later use a while loop like this:
 
@@ -112,7 +118,7 @@ int anIntegerVariable = res.getInt(columnIndex);
 String aStringVariable = res.getString(columnIndex);
 ```
 
-here ```columnIndex``` is an integer, starts from 0
+here ```columnIndex``` is an integer, starts from 0.
 
 Example:
 
@@ -124,6 +130,18 @@ while (res.moveToNext()) {
 }
 ```
 
+or
+
+```
+Cursor res = easyDB.getAllDataOrderedBy(columnIndex, false);
+while (res.moveToNext()) {
+    int anIntegerVariable = res.getInt(columnIndex);
+    String aStringVariable = res.getString(columnIndex);
+}
+```
+
+Here, ```columnIndex``` >= 1
+
 ### Get/Read one row data:
 To get all column data from a row, call ```getOneRowData(rowID)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
 Example:
@@ -131,7 +149,7 @@ Example:
 Cursor res = easyDB.getOneRowData(1);
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
-    String ID = res.getString(0); // This is the rowID, getting from the ID column
+    String ID = res.getString(0); // Column 0 is the ID column
     String c1 = res.getString(1);
     String c2 = res.getString(2);
 }
