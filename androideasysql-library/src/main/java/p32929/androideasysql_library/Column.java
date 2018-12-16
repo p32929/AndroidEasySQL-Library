@@ -38,4 +38,19 @@ public class Column {
         this.columnName = columnName.replaceAll(" ", "_");
         this.columnDataType = columnDataType;
     }
+
+    public Column(String columnName, String[] columnDataTypes) {
+        this.columnName = columnName.replaceAll(" ", "_");
+        String finalDatatype = "";
+        for (int i = 0; i < columnDataTypes.length; i++) {
+            if (!columnDataTypes[i].startsWith(" ")) {
+                columnDataTypes[i] = " " + columnDataTypes[i];
+            }
+            if (!columnDataTypes[i].endsWith(" ")) {
+                columnDataTypes[i] = columnDataTypes[i] + " ";
+            }
+            finalDatatype += columnDataTypes[i].toUpperCase();
+        }
+        this.columnDataType = finalDatatype;
+    }
 }
