@@ -133,14 +133,13 @@ while (res.moveToNext()) {
 or
 
 ```
-Cursor res = easyDB.getAllDataOrderedBy(columnIndex, false);
+Cursor res = easyDB.getAllDataOrderedBy(columnNumber, false);
 while (res.moveToNext()) {
     int anIntegerVariable = res.getInt(columnIndex);
     String aStringVariable = res.getString(columnIndex);
 }
 ```
 
-Here, ```columnIndex``` >= 1
 
 ### Get/Read one row data:
 To get all column data from a row, call ```getOneRowData(rowID)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
