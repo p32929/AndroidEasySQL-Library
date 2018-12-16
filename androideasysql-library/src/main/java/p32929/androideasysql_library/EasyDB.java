@@ -44,7 +44,7 @@ public class EasyDB extends SQLiteOpenHelper {
     private String DATABASE_NAME, TABLE_NAME = "DEMO_TABLE", SQL = "";
     private ArrayList<Column> columns = new ArrayList<>();
     private SQLiteDatabase writableDatabase;
-    ContentValues contentValues = new ContentValues();
+    private ContentValues contentValues = new ContentValues();
     private boolean initedDb = false;
 
     //
@@ -91,6 +91,14 @@ public class EasyDB extends SQLiteOpenHelper {
         Cursor res = writableDatabase.rawQuery("select * from " + TABLE_NAME, null);
         return res;
     }
+
+    public Cursor getAllDataOrderedBy(int columnNumber, boolean ascending) {
+        String postfix = ascending ? "" : " DESC ";
+        if (!initedDb || writableDatabase == null) initDatabase();
+        Cursor res = writableDatabase.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + columns.get(columnNumber).columnName + postfix, null);
+        return res;
+    }
+
 
     public Cursor getOneRowData(int id) {
         if (!initedDb || writableDatabase == null) initDatabase();
@@ -204,6 +212,13 @@ public class EasyDB extends SQLiteOpenHelper {
     }
 
     //
+    public static EasyDB init(Context context, String dbName, int version) {
+        if (!dbName.endsWith(".db"))
+            dbName += ".db";
+        dbName = dbName.replaceAll(" ", "_");
+        return new EasyDB(context, dbName, null, version);
+    }
+
     public static EasyDB init(Context context, String dbName, SQLiteDatabase.CursorFactory factory, int version) {
         if (!dbName.endsWith(".db"))
             dbName += ".db";
