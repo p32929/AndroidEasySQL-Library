@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.2'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.3'
 }
 ```
 
@@ -34,6 +34,18 @@ After that you can do:
 
 ## Code example
 ### Initialization, Set Table Name, Add columns, altogether:
+
+```
+EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
+                .setTableName("DEMO TABLE")  // You can ignore this line if you want
+                .addColumn(new Column("C1", new String[]{"text", "unique"}))
+                .addColumn(new Column("C1", new String[]{"text", "not null"}))
+                .addColumn(new Column("C1", new String[]{"text"}))
+                .doneTableColumn();
+```
+
+or
+
 ```
 EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
                 .setTableName("DEMO TABLE")  // You can ignore this line if you want
@@ -43,13 +55,9 @@ EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DA
                 .doneTableColumn();
 ```
 
-You can add as many constraint methods like  ```unique()``` , ```notNull()``` etc. Just, don't forget to call the ```done()``` method at the end. See the example above...
+** You can add as many constraint methods like  ```unique()``` , ```notNull()``` etc. Just, don't forget to call the ```done()``` method at the end. See the example above...
 
-> addColumn(column)
-
-> Column(columnName, dataType)
-
-** Saving the object into a variable will make easier to work with the database later. **
+** Saving the ```easyDB``` object into a variable will make easier to work with the database later. **
 
 ** You don't have to add any primary key. The library does it by default (as ```ID``` column) **
 
@@ -62,7 +70,7 @@ You can call the ```addData()``` in two ways:
 
 ```data``` parameter in ```addData()``` can be either integer or string. After adding all data, call ```doneDataAdding()``` method.
 
- ```columnName``` is String and ```columnNumber``` is integer
+ ```columnName``` is a String and ```columnNumber``` is an integer
 
 Example:
 ```
@@ -84,15 +92,6 @@ boolean done = easyDB.addData("C1", "Data1")
 Thus, it will return a boolean value.
 ```True``` means data added successfully,
 ```False``` means data isn't added successfully.
-
-### Get all column names:
-To get all column names as array of ```String``` call ```getAllColumns()``` Method.
-
-Example:
-```
-String columns[] = easyDB.getAllColumns();
-```
-```columns[0]``` contains the value of ```row ID```. Your custom columns will start from ```columns[1]```...
 
 ### Get/Read All Data:
 To get all data as a ```Cursor``` object, call ```getAllData()``` like this:
@@ -116,7 +115,9 @@ String aStringVariable = res.getString(columnIndex);
 here ```columnIndex``` is an integer, starts from 0
 
 Example:
+
 ```
+Cursor res = easyDB.getAllData();
 while (res.moveToNext()) {
     int anIntegerVariable = res.getInt(columnIndex);
     String aStringVariable = res.getString(columnIndex);
@@ -130,6 +131,7 @@ Example:
 Cursor res = easyDB.getOneRowData(1);
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
+    String ID = res.getString(0); // This is the rowID, getting from the ID column
     String c1 = res.getString(1);
     String c2 = res.getString(2);
 }
