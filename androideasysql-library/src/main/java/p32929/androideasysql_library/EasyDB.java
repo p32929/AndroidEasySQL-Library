@@ -94,8 +94,9 @@ public class EasyDB extends SQLiteOpenHelper {
 
     public Cursor getAllDataOrderedBy(int columnNumber, boolean ascending) {
         String postfix = ascending ? "" : " DESC ";
+        String colNam = columnNumber == 0 ? " ID " : columns.get(columnNumber - 1).columnName;
         if (!initedDb || writableDatabase == null) initDatabase();
-        Cursor res = writableDatabase.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + columns.get(columnNumber - 1).columnName + postfix, null);
+        Cursor res = writableDatabase.rawQuery("select * from " + TABLE_NAME + " ORDER BY " + colNam + postfix, null);
         return res;
     }
 

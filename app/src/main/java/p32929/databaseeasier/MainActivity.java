@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import p32929.androideasysql_library.Column;
-import p32929.androideasysql_library.DataType;
 import p32929.androideasysql_library.EasyDB;
 
 public class MainActivity extends AppCompatActivity {
@@ -143,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
     private void showData() {
         String tres = "";
         Cursor res = easyDB.getAllData();
+        //Cursor res = easyDB.getAllDataOrderedBy(0, false);
+
         while (res.moveToNext()) {
             String row = res.getString(0);
             String c1 = res.getString(1);
