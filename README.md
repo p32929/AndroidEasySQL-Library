@@ -142,10 +142,32 @@ while (res.moveToNext()) {
 
 
 ### Get/Read one row data:
-To get all column data from a row, call ```getOneRowData(rowID)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
+To get data from a row, call ```getOneRowData(rowID)``` or ```getOneRowData(columnNumber, valueToMatchWithTheColumn)``` or ```getOneRowData(columnName, valueToMatchWithTheColumn)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
 Example:
 ```
 Cursor res = easyDB.getOneRowData(1);
+if (res != null) {
+    res.moveToFirst(); // Because here's only one row data
+    String ID = res.getString(0); // Column 0 is the ID column
+    String c1 = res.getString(1);
+    String c2 = res.getString(2);
+}
+```
+
+or
+
+Cursor res = easyDB.getOneRowData(1, "1");
+if (res != null) {
+    res.moveToFirst(); // Because here's only one row data
+    String ID = res.getString(0); // Column 0 is the ID column
+    String c1 = res.getString(1);
+    String c2 = res.getString(2);
+}
+```
+
+or
+
+Cursor res = easyDB.getOneRowData("ID", "1");
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
     String ID = res.getString(0); // Column 0 is the ID column
