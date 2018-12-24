@@ -156,6 +156,7 @@ if (res != null) {
 
 or
 
+```
 Cursor res = easyDB.getOneRowData(1, "1");
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
@@ -167,6 +168,7 @@ if (res != null) {
 
 or
 
+```
 Cursor res = easyDB.getOneRowData("ID", "1");
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
