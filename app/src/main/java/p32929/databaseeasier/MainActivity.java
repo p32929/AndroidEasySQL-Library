@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void getData1(View view) {
         String tres = "";
-        Cursor res = easyDB.getOneRowData(1);
+        Cursor res = easyDB.getOneRowData(1, "5");
         if (res != null) {
             res.moveToFirst();
 

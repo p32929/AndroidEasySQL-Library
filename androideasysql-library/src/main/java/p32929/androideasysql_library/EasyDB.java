@@ -109,8 +109,7 @@ public class EasyDB extends SQLiteOpenHelper {
             allColNames[i + 1] = columns.get(i).columnName;
         }
         Cursor cursor = writableDatabase.query(TABLE_NAME,
-                allColNames,
-                allColNames[0].toString() + "=?",
+                allColNames, allColNames[0].toString() + "=?",
                 new String[]{String.valueOf(id)},
                 null, null, null, "1");
 
@@ -120,6 +119,45 @@ public class EasyDB extends SQLiteOpenHelper {
             return null;
         }
     }
+
+    public Cursor getOneRowData(int columnNumber, String value) {
+        if (!initedDb || writableDatabase == null) initDatabase();
+        String allColNames[] = new String[columns.size() + 1];
+        allColNames[0] = "ID";
+        for (int i = 0; i < columns.size(); i++) {
+            allColNames[i + 1] = columns.get(i).columnName;
+        }
+        Cursor cursor = writableDatabase.query(TABLE_NAME,
+                allColNames, allColNames[columnNumber].toString() + "=?",
+                new String[]{value},
+                null, null, null, "1");
+
+        if (cursor.getCount() > 0) {
+            return cursor;
+        } else {
+            return null;
+        }
+    }
+
+    public Cursor getOneRowData(String columnName, String value) {
+        if (!initedDb || writableDatabase == null) initDatabase();
+        String allColNames[] = new String[columns.size() + 1];
+        allColNames[0] = "ID";
+        for (int i = 0; i < columns.size(); i++) {
+            allColNames[i + 1] = columns.get(i).columnName;
+        }
+        Cursor cursor = writableDatabase.query(TABLE_NAME,
+                allColNames, " " + columnName + " " + "=?",
+                new String[]{value},
+                null, null, null, "1");
+
+        if (cursor.getCount() > 0) {
+            return cursor;
+        } else {
+            return null;
+        }
+    }
+
 
     public boolean matchColumns(String columnsToMatch[], String valuesToMatch[]) {
         String query = "";
