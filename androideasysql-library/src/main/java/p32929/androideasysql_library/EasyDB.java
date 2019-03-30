@@ -100,8 +100,8 @@ public class EasyDB extends SQLiteOpenHelper {
         return res;
     }
 
-
-    public Cursor getOneRowData(int id) {
+    //
+    public Cursor getOneRowData(int rowID) {
         if (!initedDb || writableDatabase == null) initDatabase();
         String allColNames[] = new String[columns.size() + 1];
         allColNames[0] = "ID";
@@ -110,7 +110,7 @@ public class EasyDB extends SQLiteOpenHelper {
         }
         Cursor cursor = writableDatabase.query(TABLE_NAME,
                 allColNames, allColNames[0].toString() + "=?",
-                new String[]{String.valueOf(id)},
+                new String[]{String.valueOf(rowID)},
                 null, null, null, "1");
 
         if (cursor.getCount() > 0) {
@@ -158,7 +158,7 @@ public class EasyDB extends SQLiteOpenHelper {
         }
     }
 
-
+    //
     public boolean matchColumns(String columnsToMatch[], String valuesToMatch[]) {
         String query = "";
         for (int i = 0; i < columnsToMatch.length; i++) {
@@ -187,6 +187,21 @@ public class EasyDB extends SQLiteOpenHelper {
         contentValues.put(columns.get(columnNumber - 1).columnName, data);
         return this;
     }
+
+    public EasyDB updateData(String columnName, String data) {
+        columnName = columnName.replaceAll(" ", "_");
+        if (!initedDb || writableDatabase == null) initDatabase();
+        contentValues.put(columnName, data);
+        return this;
+    }
+
+    public EasyDB updateData(String columnName, int data) {
+        columnName = columnName.replaceAll(" ", "_");
+        if (!initedDb || writableDatabase == null) initDatabase();
+        contentValues.put(columnName, data);
+        return this;
+    }
+
 
     public boolean rowID(int id) {
         try {
@@ -244,12 +259,19 @@ public class EasyDB extends SQLiteOpenHelper {
     }
 
     //
-    public void initDatabase() {
+    private void initDatabase() {
         writableDatabase = getWritableDatabase();
         initedDb = true;
     }
 
     //
+    public static EasyDB init(Context context, String dbName) {
+        if (!dbName.endsWith(".db"))
+            dbName += ".db";
+        dbName = dbName.replaceAll(" ", "_");
+        return new EasyDB(context, dbName, null, 1);
+    }
+
     public static EasyDB init(Context context, String dbName, int version) {
         if (!dbName.endsWith(".db"))
             dbName += ".db";

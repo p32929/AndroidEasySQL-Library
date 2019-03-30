@@ -33,13 +33,7 @@ public class Column {
     //
     String columnName, columnDataType;
 
-    //
-    public Column(String columnName, String columnDataType) {
-        this.columnName = columnName.replaceAll(" ", "_");
-        this.columnDataType = columnDataType;
-    }
-
-    public Column(String columnName, String[] columnDataTypes) {
+    public Column (String columnName, String... columnDataTypes) {
         this.columnName = columnName.replaceAll(" ", "_");
         String finalDatatype = "";
         for (int i = 0; i < columnDataTypes.length; i++) {

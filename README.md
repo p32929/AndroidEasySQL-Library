@@ -14,11 +14,11 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.7'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.8'
 }
 ```
 
-## Usage
+## Basic Usage
 Steps to follow:
 * Initialize
 * Set Table Name (Not mandatory)
@@ -30,13 +30,13 @@ After that you can do:
 * Read data
 * Edit data
 * Delete data
-* & more
+* & so much more
 
 ## Code example
 ### Initialization, Set Table Name, Add columns, altogether:
 
 ```
-EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
+EasyDB easyDB = EasyDB.init(this, "TEST") // "TEST" is the name of the DATABASE
                 .setTableName("DEMO TABLE")  // You can ignore this line if you want
                 .addColumn(new Column("C1", new String[]{"text", "unique"}))
                 .addColumn(new Column("C2", new String[]{"text", "not null"}))
@@ -47,15 +47,13 @@ EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DA
 or
 
 ```
-EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DATABASE
+EasyDB easyDB = EasyDB.init(this, "TEST") // "TEST" is the name of the DATABASE
                 .setTableName("DEMO TABLE")  // You can ignore this line if you want
-                .addColumn(new Column("C1", new DataType()._text_().unique().done()))
-                .addColumn(new Column("C2", new DataType()._text_().notNull().done()))
-                .addColumn(new Column("C3", new DataType()._text_().done()))
+                .addColumn(new Column("C1", "text", "unique")) // Contrains like "text", "unique", "not null" are not case sensitive
+                .addColumn(new Column("C2", "text", "not null"))
+                .addColumn(new Column("C3", "text"))
                 .doneTableColumn();
 ```
-
-** You can add as many constraint methods like  ```unique()``` , ```notNull()``` etc. Just, don't forget to call the ```done()``` method at the end. See the example above...
 
 ** Saving the ```easyDB``` object into a variable will make easier to work with the database later. **
 
@@ -64,13 +62,11 @@ EasyDB easyDB = EasyDB.init(this, "TEST", null, 1) // TEST is the name of the DA
 ### Adding data:
 You can call the ```addData()``` in two ways:
 
-> addData(columnNumber, data)
+> addData(columnNumber, data) // ```columnNumber``` is an integer
 
-> addData(columnName, data)
+> addData(columnName, data) // ```columnName``` is a String
 
-```data``` parameter in ```addData()``` can be either integer or string. After adding all data, call ```doneDataAdding()``` method.
-
- ```columnName``` is a String and ```columnNumber``` is an integer
+```data``` parameter in ```addData()``` can be either integer or string. After adding all the data, call ```doneDataAdding()``` method.
 
 Example:
 ```
@@ -102,7 +98,7 @@ or
 
 ```Cursor res = easyDB.getAllDataOrderedBy(columnNumber, ascendingOrDescending);```
 
-```ascendingOrDescending``` parameter in ```getAllDataOrderedBy()``` is a boolean value. To get all data in ascending order pass ```true```, or to get all in descending order pass ```false``` as the parameter.
+```ascendingOrDescending``` parameter in ```getAllDataOrderedBy()``` is a boolean value. To get all data in ascending order pass ```true```, or to get all data in descending order pass ```false``` as the parameter.
 
 Later use a while loop like this:
 
@@ -142,7 +138,7 @@ while (res.moveToNext()) {
 
 
 ### Get/Read one row data:
-To get data from a row, call ```getOneRowData(rowID)``` or ```getOneRowData(columnNumber, valueToMatchWithTheColumn)``` or ```getOneRowData(columnName, valueToMatchWithTheColumn)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
+To get data from a row, call ```getOneRowData(rowID)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
 Example:
 ```
 Cursor res = easyDB.getOneRowData(1);
@@ -154,10 +150,11 @@ if (res != null) {
 }
 ```
 
-or
-
+### Get/Read one row data by matching a column data:
+To get data from a row by matching data with a column, call ```getOneRowData(columnNumber, valueToMatchWithTheColumn)``` or ```getOneRowData(columnName, valueToMatchWithTheColumn)```
+example:
 ```
-Cursor res = easyDB.getOneRowData(1, "1");
+Cursor res = easyDB.getOneRowData(1, "data");
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
     String ID = res.getString(0); // Column 0 is the ID column
@@ -169,7 +166,7 @@ if (res != null) {
 or
 
 ```
-Cursor res = easyDB.getOneRowData("ID", "1");
+Cursor res = easyDB.getOneRowData("ID", "data");
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
     String ID = res.getString(0); // Column 0 is the ID column
