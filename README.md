@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.10'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.11'
 }
 ```
 
@@ -150,11 +150,11 @@ if (res != null) {
 }
 ```
 
-### Get/Read one row data by matching a column data:
-To get data from a row by matching data with a column, call ```getOneRowData(columnNumber, valueToMatchWithTheColumn)``` or ```getOneRowData(columnName, valueToMatchWithTheColumn)```
+### Get/Read/Search one/multiple row data by matching a column data:
+To get data from one/multiple rows by matching data with a column, call ```searchInColumn(columnNumber, valueToSearch, limit)``` or ```searchInColumn(columnName, valueToSearch, limit)```
 example:
 ```
-Cursor res = easyDB.getOneRowData(1, "data");
+Cursor res = easyDB.searchInColumn(1, "data", 1); // Here we passed limit = 1. Thus it will return only one row data with the matched column value
 if (res != null) {
     res.moveToFirst(); // Because here's only one row data
     String ID = res.getString(0); // Column 0 is the ID column
@@ -166,14 +166,17 @@ if (res != null) {
 or
 
 ```
-Cursor res = easyDB.getOneRowData("ID", "data");
+Cursor res = easyDB.searchInColumn("ID", "data", -1); // Here we passed limit = -1. Thus it will return all the rows with the matched column values
 if (res != null) {
-    res.moveToFirst(); // Because here's only one row data
-    String ID = res.getString(0); // Column 0 is the ID column
-    String c1 = res.getString(1);
-    String c2 = res.getString(2);
+    while (res.moveToNext()) {
+            String ID = res.getString(0); // Column 0 is the ID column
+            String c1 = res.getString(1);
+            String c2 = res.getString(2);
+    }
 }
 ```
+
+> Please DO NOT pass ```limit = 0``` as the parameter
 
 ### Match data from multiple columns:
 To check if some values exist or not in the database, first call ```getAllColumns()``` to get all the column names like this:

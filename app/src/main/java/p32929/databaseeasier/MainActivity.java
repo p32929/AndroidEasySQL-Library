@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         easyDB = EasyDB.init(this, "TEST") // TEST is the name of the DATABASE
                 .setTableName("DEMO TABLE")  // You can ignore this line if you want
-                .addColumn(new Column("C1","text", "unique"))
+                .addColumn(new Column("C1", "text"))
                 .addColumn(new Column("C2", "text", "unique"))
                 .doneTableColumn();
 
@@ -149,23 +149,24 @@ public class MainActivity extends AppCompatActivity {
             String c1 = res.getString(1);
             String c2 = res.getString(2);
             tres += "Row: " + row + " C1 = " + c1 + " C2 = " + c2 + "\n";
-
-            textViewResult.setText(tres);
         }
+        textViewResult.setText(tres);
     }
 
     public void getData1(View view) {
         String tres = "";
-        Cursor res = easyDB.getOneRowData(1, "5");
+        Cursor res = easyDB.searchInColumn(1, "1", -1);
+        
         if (res != null) {
-            res.moveToFirst();
-
-            String row = res.getString(0);
-            String c1 = res.getString(1);
-            String c2 = res.getString(2);
-            tres += "Row: " + row + " C1 = " + c1 + " C2 = " + c2 + "\n";
+            while (res.moveToNext()) {
+                String row = res.getString(0);
+                String c1 = res.getString(1);
+                String c2 = res.getString(2);
+                tres += "Row: " + row + " C1 = " + c1 + " C2 = " + c2 + "\n";
+            }
 
             textViewResult.setText(tres);
+
         } else {
             Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
         }

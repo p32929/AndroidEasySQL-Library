@@ -120,6 +120,7 @@ public class EasyDB extends SQLiteOpenHelper {
         }
     }
 
+    @Deprecated
     public Cursor getOneRowData(int columnNumber, String value) {
         if (!initedDb || writableDatabase == null) initDatabase();
         String allColNames[] = new String[columns.size() + 1];
@@ -139,6 +140,7 @@ public class EasyDB extends SQLiteOpenHelper {
         }
     }
 
+    @Deprecated
     public Cursor getOneRowData(String columnName, String value) {
         if (!initedDb || writableDatabase == null) initDatabase();
         String allColNames[] = new String[columns.size() + 1];
@@ -150,6 +152,44 @@ public class EasyDB extends SQLiteOpenHelper {
                 allColNames, " " + columnName + " " + "=?",
                 new String[]{value},
                 null, null, null, "1");
+
+        if (cursor.getCount() > 0) {
+            return cursor;
+        } else {
+            return null;
+        }
+    }
+
+    public Cursor searchInColumn(int columnNumber, String valueToSearch, int limit) {
+        if (!initedDb || writableDatabase == null) initDatabase();
+        String allColNames[] = new String[columns.size() + 1];
+        allColNames[0] = "ID";
+        for (int i = 0; i < columns.size(); i++) {
+            allColNames[i + 1] = columns.get(i).columnName;
+        }
+        Cursor cursor = writableDatabase.query(TABLE_NAME,
+                allColNames, allColNames[columnNumber].toString() + "=?",
+                new String[]{valueToSearch},
+                null, null, null, limit == -1 ? null : String.valueOf(limit));
+
+        if (cursor.getCount() > 0) {
+            return cursor;
+        } else {
+            return null;
+        }
+    }
+
+    public Cursor searchInColumn(String columnName, String valueToSearch, int limit) {
+        if (!initedDb || writableDatabase == null) initDatabase();
+        String allColNames[] = new String[columns.size() + 1];
+        allColNames[0] = "ID";
+        for (int i = 0; i < columns.size(); i++) {
+            allColNames[i + 1] = columns.get(i).columnName;
+        }
+        Cursor cursor = writableDatabase.query(TABLE_NAME,
+                allColNames, " " + columnName + " " + "=?",
+                new String[]{valueToSearch},
+                null, null, null, limit == -1 ? null : String.valueOf(limit));
 
         if (cursor.getCount() > 0) {
             return cursor;
