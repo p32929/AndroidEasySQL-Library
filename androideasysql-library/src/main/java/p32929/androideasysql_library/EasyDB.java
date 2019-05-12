@@ -262,9 +262,19 @@ public class EasyDB extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME, columns.get(columnNumber - 1).columnName + " = ?", new String[]{String.valueOf(valueToMatch)}) == 1;
     }
 
+    public boolean deleteRow(int columnNumber, String valueToMatch) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, columns.get(columnNumber - 1).columnName + " = ?", new String[]{valueToMatch}) == 1;
+    }
+
     public boolean deleteRow(String columnName, int valueToMatch) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, columnName + " = ?", new String[]{String.valueOf(valueToMatch)}) == 1;
+    }
+
+    public boolean deleteRow(String columnName, String valueToMatch) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, columnName + " = ?", new String[]{valueToMatch}) == 1;
     }
 
     public void deleteAllDataFromTable() {
