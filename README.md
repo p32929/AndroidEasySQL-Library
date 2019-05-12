@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.11'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.3.12'
 }
 ```
 
@@ -219,6 +219,14 @@ Thus, it will return a boolean value. So, you can know if your data is updated o
 To delete a row data, call ```deleteRow(rowId)``` like this:
 
 ```boolean deleted = easyDB.deleteRow(rowId);```
+
+or
+
+```boolean deleted = easyDB.deleteRow(columnNumber, valueToMatch)```
+
+or
+
+```boolean deleted = easyDB.deleteRow(columnName, valueToMatch)```
 
 Thus, it will return a boolean value. So, you can know if your data is updated or not...
 
