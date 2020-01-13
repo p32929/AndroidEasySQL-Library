@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         easyDB = EasyDB.init(this, "TEST") // TEST is the name of the DATABASE
                 .setTableName("DEMO TABLE")  // You can ignore this line if you want
-                .addColumn(new Column("C1", "text"))
-                .addColumn(new Column("C2", "text", "unique"))
+                .addColumn("C1", "text")
+                .addColumn("C2", "text", "unique")
                 .doneTableColumn();
 
         buttonShow.setOnClickListener(new View.OnClickListener() {

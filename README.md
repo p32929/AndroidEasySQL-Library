@@ -14,7 +14,7 @@ allprojects {
 Add the dependency
 ```
 dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.4.0'
+     implementation 'com.github.p32929:AndroidEasySQL-Library:1.4.1'
 }
 ```
 
@@ -36,12 +36,12 @@ After that you can do:
 ### Initialization, Set Table Name, Add columns, altogether:
 
 ```
-EasyDB easyDB = EasyDB.init(this, "TEST") // "TEST" is the name of the DATABASE
-                .setTableName("DEMO TABLE")  // You can ignore this line if you want
-                .addColumn(new Column("C1", new String[]{"text", "unique"}))
-                .addColumn(new Column("C2", new String[]{"text", "not null"}))
-                .addColumn(new Column("C3", new String[]{"text"}))
-                .doneTableColumn();
+EasyDB easyDB = EasyDB.init(this, "TEST") // TEST is the name of the DATABASE
+                       .setTableName("DEMO TABLE")  // You can ignore this line if you want
+                       .addColumn("C1", "text") // Contrains like "text", "unique", "not null" are not case sensitive
+                       .addColumn("C2", "text", "unique")
+                       .addColumn("C3", "text", "unique", "not null")
+                       .doneTableColumn();
 ```
 
 or

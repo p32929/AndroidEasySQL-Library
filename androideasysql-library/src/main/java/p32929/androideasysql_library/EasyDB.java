@@ -293,6 +293,12 @@ public class EasyDB extends SQLiteOpenHelper {
         return this;
     }
 
+    public EasyDB addColumn(String columnName, String... columnDataTypes) {
+        Column column = new Column(columnName, columnDataTypes);
+        columns.add(column);
+        return this;
+    }
+
     public EasyDB doneTableColumn() {
         SQL = " CREATE TABLE " + TABLE_NAME + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT, ";
         for (int i = 0; i < columns.size(); i++) {
