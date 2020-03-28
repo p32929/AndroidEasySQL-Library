@@ -1,3 +1,10 @@
+# UPDATE!!!
+A newer, easier and better version of this library (V2) can be found here:
+<br>
+https://github.com/p32929/EasiestSqlLibrary
+
+But if you want, you can still use this library. Thanks...
+
 # AndroidEasySQL-Library
 An Easier &amp; Lazier approach to SQL database for Android
 
