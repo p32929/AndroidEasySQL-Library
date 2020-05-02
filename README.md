@@ -3,7 +3,7 @@ A newer, easier and better version of this library (V2) can be found here:
 <br>
 https://github.com/p32929/EasiestSqlLibrary
 
-But if you want, you can still use this library. Thanks...
+But if you want, you can still use this library. If you like Flutter, the flutter version of this library can be found here -> [Github](https://github.com/p32929/EasiestSqlFlutter) or [pub.dev](https://pub.dev/packages/easiestdb) . Thanks...
 
 # AndroidEasySQL-Library
 An Easier &amp; Lazier approach to SQL database for Android
