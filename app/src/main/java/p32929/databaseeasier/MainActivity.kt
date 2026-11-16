@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
+import androidx.core.view.WindowCompat
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -77,6 +79,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val system = isSystemInDarkTheme()
             var dark by rememberSaveable { mutableStateOf(system) }
+            LaunchedEffect(dark) {
+                // Status bar icons follow the in-app theme, not just the system one.
+                WindowCompat.getInsetsController(window, window.decorView).apply {
+                    isAppearanceLightStatusBars = !dark
+                    isAppearanceLightNavigationBars = !dark
+                }
+            }
             MaterialTheme(colorScheme = if (dark) DarkColors else LightColors) {
                 NotesScreen(db, dark, onToggleTheme = { dark = !dark })
             }
