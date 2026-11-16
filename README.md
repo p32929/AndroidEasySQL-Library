@@ -1,251 +1,122 @@
-# UPDATE!!!
-A newer, easier and better version of this library (V2) can be found here:
-<br>
-https://github.com/p32929/EasiestSqlLibrary
-
-But if you want, you can still use this library. If you like Flutter, the flutter version of this library can be found here -> [Github](https://github.com/p32929/EasiestdbFlutter) or [pub.dev](https://pub.dev/packages/easiestdb) . Thanks...
-
 # AndroidEasySQL-Library
-An Easier & Lazier approach to SQL database for Android
 
+[![](https://jitpack.io/v/p32929/AndroidEasySQL-Library.svg)](https://jitpack.io/#p32929/AndroidEasySQL-Library)
 
-## Installation
-Add it in your root build.gradle at the end of repositories:
-```gradle
-allprojects {
-  repositories {
-    maven { url 'https://jitpack.io' }
-  }
-}
-```
+A small SQLite library for Android. Create a table, then add, read, update and delete rows in a few chained calls, without writing SQL or a `SQLiteOpenHelper` of your own.
 
-Add the dependency
-```gradle
-dependencies {
-     implementation 'com.github.p32929:AndroidEasySQL-Library:1.4.1'
-}
-```
+Version 2.0.0 is rewritten in Kotlin for modern Android, works the same from Java, and adds a few things that make it nicer to use: read every row as a simple list, count rows, and store `Long` and `Double` values.
 
-## Basic Usage
-Steps to follow:
-* Initialize
-* Set Table Name (Not mandatory)
-* Add columns
-* Call done method
+## Screenshots
 
-After that you can do:
-* Add data
-* Read data
-* Edit data
-* Delete data
-* & so much more
+The sample app is a small notes app built with this library.
 
-## Code example
-### Initialization, Set Table Name, Add columns, altogether:
+| Light | Dark |
+|---|---|
+| ![Light](docs/screenshots/light.png) | ![Dark](docs/screenshots/dark.png) |
 
-```java
-EasyDB easyDB = EasyDB.init(this, "TEST") // TEST is the name of the DATABASE
-                       .setTableName("DEMO TABLE")  // You can ignore this line if you want
-                       .addColumn("C1", "text") // Contrains like "text", "unique", "not null" are not case sensitive
-                       .addColumn("C2", "text", "unique")
-                       .addColumn("C3", "text", "unique", "not null")
-                       .doneTableColumn();
-```
+## Why use it
 
-or
+1. **No SQL to write.** You describe the columns once, and the library builds the table.
+2. **An `ID` column for free.** Every table gets an auto-increment primary key.
+3. **Chained calls.** Add or update a whole row in one line.
+4. **Works from Kotlin and Java.**
+5. **Tiny.** No extra dependencies, Android 5.0 (API 21) and up.
 
-```java
-EasyDB easyDB = EasyDB.init(this, "TEST") // "TEST" is the name of the DATABASE
-                .setTableName("DEMO TABLE")  // You can ignore this line if you want
-                .addColumn(new Column("C1", "text", "unique")) // Contrains like "text", "unique", "not null" are not case sensitive
-                .addColumn(new Column("C2", "text", "not null"))
-                .addColumn(new Column("C3", "text"))
-                .doneTableColumn();
-```
+## Install
 
-** Saving the ```easyDB``` object into a variable will make easier to work with the database later. **
+Add JitPack to your repositories in `settings.gradle.kts`:
 
-** You don't have to add any primary key. The library does it by default (as ```ID``` column) **
-
-### Adding data:
-You can call the ```addData()``` in two ways:
-
-> addData(columnNumber, data) // ```columnNumber``` is an integer
-
-> addData(columnName, data) // ```columnName``` is a String
-
-```data``` parameter in ```addData()``` can be either integer or string. After adding all the data, call ```doneDataAdding()``` method.
-
-Example:
-```java
-boolean done = easyDB.addData(1, "Data1")
-                .addData(2, "Data2")
-                .addData(3, "Data3")
-                .doneDataAdding();
-```
-
-or
-
-```java
-boolean done = easyDB.addData("C1", "Data1")
-                .addData("C2", "Data2")
-                .addData("C3", "Data3")
-                .doneDataAdding();
-```
-
-Thus, it will return a boolean value.
-```True``` means data added successfully,
-```False``` means data isn't added successfully.
-
-### Get/Read All Data:
-To get all data as a ```Cursor``` object, call ```getAllData()``` or ```getAllDataOrderedBy()``` like this:
-
-```Cursor res = easyDB.getAllData();```
-
-or
-
-```Cursor res = easyDB.getAllDataOrderedBy(columnNumber, ascendingOrDescending);```
-
-```ascendingOrDescending``` parameter in ```getAllDataOrderedBy()``` is a boolean value. To get all data in ascending order pass ```true```, or to get all data in descending order pass ```false``` as the parameter.
-
-Later use a while loop like this:
-
-```
-while (res.moveToNext()) {
-	// Your code here
-}
-```
-
-To get an integer from ```res``` call ```getInt(columnIndex)``` and to get a String call ```getString(columnIndex)``` like this:
-```java
-int anIntegerVariable = res.getInt(columnIndex);
-String aStringVariable = res.getString(columnIndex);
-```
-
-here ```columnIndex``` is an integer, starts from 0.
-
-Example:
-
-```java
-Cursor res = easyDB.getAllData();
-while (res.moveToNext()) {
-    int anIntegerVariable = res.getInt(columnIndex);
-    String aStringVariable = res.getString(columnIndex);
-}
-```
-
-or
-
-```java
-Cursor res = easyDB.getAllDataOrderedBy(columnNumber, false);
-while (res.moveToNext()) {
-    int anIntegerVariable = res.getInt(columnIndex);
-    String aStringVariable = res.getString(columnIndex);
-}
-```
-
-
-### Get/Read one row data:
-To get data from a row, call ```getOneRowData(rowID)```. It will return the data as a Cursor object. You can then retrieve each column data from the cursor.
-Example:
-```java
-Cursor res = easyDB.getOneRowData(1);
-if (res != null) {
-    res.moveToFirst(); // Because here's only one row data
-    String ID = res.getString(0); // Column 0 is the ID column
-    String c1 = res.getString(1);
-    String c2 = res.getString(2);
-}
-```
-
-### Get/Read/Search one/multiple row data by matching a column data:
-To get data from one/multiple rows by matching data with a column, call ```searchInColumn(columnNumber, valueToSearch, limit)``` or ```searchInColumn(columnName, valueToSearch, limit)```
-example:
-```java
-Cursor res = easyDB.searchInColumn(1, "data", 1); // Here we passed limit = 1. Thus it will return only one row data with the matched column value
-if (res != null) {
-    res.moveToFirst(); // Because here's only one row data
-    String ID = res.getString(0); // Column 0 is the ID column
-    String c1 = res.getString(1);
-    String c2 = res.getString(2);
-}
-```
-
-or
-
-```java
-Cursor res = easyDB.searchInColumn("ID", "data", -1); // Here we passed limit = -1. Thus it will return all the rows with the matched column values
-if (res != null) {
-    while (res.moveToNext()) {
-            String ID = res.getString(0); // Column 0 is the ID column
-            String c1 = res.getString(1);
-            String c2 = res.getString(2);
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
     }
 }
 ```
 
-> Please DO NOT pass ```limit = 0``` as the parameter
+Add the dependency:
 
-### Match data from multiple columns:
-To check if some values exist or not in the database, first call ```getAllColumns()``` to get all the column names like this:
-
-```String columns[] = easyDB.getAllColumns();```
-
-Now, You may create an array of ```String``` defining which columns you want to match with some values, like this:
-
-```java
-String columnsToMatch[] = new String[]{columns[1], columns[2]};
-```
-And an array of values(String) you want to match, like this:
-
-```java
-String valuesToMatch[] = new String[]{valueToSearchInColumn1, valueToSearchInColumn2};
+```kotlin
+dependencies {
+    implementation("com.github.p32929:AndroidEasySQL-Library:2.0.0")
+}
 ```
 
-Now call ```matchColumns()``` like this:
+## Usage (Kotlin)
 
-```boolean matched = easyDB.matchColumns(columnsToMatch, valuesToMatch);```
+```kotlin
+// 1. Create the database and the table once, and keep the object.
+val db = EasyDB.init(context, "Notes")
+    .setTableName("Notes")
+    .addColumn("Title", "text", "not null")
+    .addColumn("Body", "text")
+    .addColumn("Edited", "integer")
+    .doneTableColumn()
 
-Thus, it will return a boolean value. So, you can know if your given values are matched or not.
+// 2. Add a row
+db.addData("Title", "Groceries")
+    .addData("Body", "Milk and eggs")
+    .addData("Edited", System.currentTimeMillis())
+    .doneDataAdding() // true if saved
 
-** Creating these two array variables(```columnsToMatch``` & ```valuesToMatch```) will make it easier to pass them into ```matchColumns()``` method. **
+// 3. Read every row as a list of maps (newest first, ordered by column 3)
+val notes = db.getAllRows(3, false)
+notes.forEach { println("${it["ID"]}: ${it["Title"]}") }
 
-### Update / Edit data:
-To update / Edit, call ```updateData(columnNumber, data)``` method.
-Example:
-```java
-boolean updated = easyDB.updateData(1, "UpdatedData1")
-                .updateData(2, "UpdatedData2")
-                .updateData(3, "UpdatedData3")
-                .rowID(id);
+// 4. Update the row with ID 1
+db.updateData("Title", "Shopping").rowID(1)
+
+// 5. Delete the row with ID 1
+db.deleteRow(1)
 ```
 
-UpdatedData can be either integer or String.
-Thus, it will return a boolean value. So, you can know if your data is updated or not...
+## Usage (Java)
 
-### Delete data:
-To delete a row data, call ```deleteRow(rowId)``` like this:
+```java
+EasyDB db = EasyDB.init(context, "Notes")
+        .setTableName("Notes")
+        .addColumn("Title", "text", "not null")
+        .addColumn(new Column("Body", "text"))
+        .doneTableColumn();
 
-```boolean deleted = easyDB.deleteRow(rowId);```
+boolean saved = db.addData("Title", "Groceries").addData("Body", "Milk and eggs").doneDataAdding();
 
-or
+List<Map<String, Object>> rows = db.getAllRows();
 
-```boolean deleted = easyDB.deleteRow(columnNumber, valueToMatch)```
+boolean updated = db.updateData(1, "Shopping").rowID(1);
+boolean deleted = db.deleteRow(1);
+```
 
-or
+## All the calls
 
-```boolean deleted = easyDB.deleteRow(columnName, valueToMatch)```
+1. **Set up:** `init`, `setTableName`, `addColumn`, `doneTableColumn`, `getAllColumns`.
+2. **Add:** `addData(column, value)` for each column, then `doneDataAdding()`. A column can be its name or its number (1 is your first column).
+3. **Read:**
+   1. `getAllRows()` returns a list of maps.
+   2. `getAllData()` and `getAllDataOrderedBy(columnNumber, ascending)` return a `Cursor`.
+   3. `getOneRowData(id)` and `searchInColumn(column, value, limit)` return a `Cursor`, or `null` when nothing matches. Pass limit `-1` for every match.
+   4. `matchColumns(columns, values)` tells you if a row has all those values.
+   5. `count()` returns the number of rows.
+4. **Update:** `updateData(column, value)` for each column, then `rowID(id)`.
+5. **Delete:** `deleteRow(id)`, `deleteRow(column, value)` and `deleteAllDataFromTable()`.
 
-Thus, it will return a boolean value. So, you can know if your data is updated or not...
+Values can be `String`, `Int`, `Long`, `Double` or `null`. Close any `Cursor` you get back when you are done with it.
 
-### Delete all data from the Table:
-To delete the table and its all data, call ```deleteAllDataFromTable``` like this:
+## Migrating from 1.x
 
-```easyDB.deleteAllDataFromTable();```
+Most 1.x code works without changes. A few things are different:
 
-Hope you'll enjoy using the library :)
+1. The minimum Android version is now 5.0 (API 21), up from 4.0.3.
+2. `deleteRow(column, value)` now returns `true` when it deleted one or more rows. Before, it returned `false` if more than one row matched, even though they were deleted.
+3. `searchInColumn` with a limit of `0` now returns every match. Before, it returned nothing.
+4. `getOneRowData(column, value)` is deprecated. Use `searchInColumn(column, value, 1)`.
+5. The library now uses the application context, so it no longer holds on to your Activity.
 
-> Thanks
+If you need a version that still supports older Android, keep using `1.4.1`.
+
+Using Flutter? The same idea is on pub.dev as [easiestdb](https://pub.dev/packages/easiestdb).
 
 ## License
 
